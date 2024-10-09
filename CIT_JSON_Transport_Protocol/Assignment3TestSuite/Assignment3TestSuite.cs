@@ -636,9 +636,9 @@ namespace Assignment3TestSuite
                 } while (bytesread == 2048);
 
                 var responseData = Encoding.UTF8.GetString(memStream.ToArray());
-                return JsonSerializer.Deserialize<Response>(responseData);
+                //return JsonSerializer.Deserialize<Response>(responseData); Denne er kommenteret ud, da vi bruger PropertyNamingPolicy is Server. Hvis vi havde brugt denne, vil den læse Json data som pascal case. Vil vi ikke, da vi i ServerProgram læser det som CamelCase. På denne måde er det ens på begge sider, og vi undgår NullReferenceException
                 // if the naming policy is used you need to do the same on the server side
-                //return JsonSerializer.Deserialize<Response>(responseData, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+                return JsonSerializer.Deserialize<Response>(responseData, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
             }
         }
     }
