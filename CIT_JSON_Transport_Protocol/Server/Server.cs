@@ -24,9 +24,12 @@ using System.Text.Json;
         {
             var client = server.AcceptTcpClient();
         Console.WriteLine("Client connected!!!");
-            HandleClient(client);
 
- 
+            Task.Run(() => HandleClient(client)); // Vi laver en ny thread for hver client, så vi kan håndtere flere clients på samme tid. Nødvendigt, da vi i test environment kører tests på flere threads, og denne tillader altså server at kører med flere threads. 
+
+            
+
+
 
         }
         }
@@ -48,6 +51,25 @@ using System.Text.Json;
                 };
                 var json = ToJson(response);
                 WriteToStream(stream, json);
+            }
+            else
+            {
+                var request = FromJson(msg);
+                if(request == null)
+                {
+                    return; //Could possibly use better error handling here!
+                }
+                string[]validMethods = ["create", "read", "update", "delete", "echo"];
+
+                if (!validMethods.Contains(request.Method))
+                {
+                    var response = new Response
+                    {
+                        Status = "illegal method"
+                    };
+                    var json = ToJson(response);
+                    WriteToStream(stream, json);    
+                }
             }
 
       

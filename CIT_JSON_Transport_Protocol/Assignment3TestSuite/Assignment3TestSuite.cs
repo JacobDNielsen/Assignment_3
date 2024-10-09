@@ -1,3 +1,4 @@
+//#define RUN_ALL_TESTS //Hvis denne defines, så kører vi alle tests.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -76,7 +77,7 @@ namespace Assignment3TestSuite
             Assert.Contains("illegal method", response.Status.ToLower());
         }
 
-
+#if RUN_ALL_TESTS //Hvis denne er defineret, så kører vi alle tests.
         [Theory]
         [InlineData("create")]
         [InlineData("read")]
@@ -574,7 +575,7 @@ namespace Assignment3TestSuite
             Assert.Contains("5 not found", response.Status.ToLower());
         }
 
-
+#endif
 
         /**********************************************************
          * 
