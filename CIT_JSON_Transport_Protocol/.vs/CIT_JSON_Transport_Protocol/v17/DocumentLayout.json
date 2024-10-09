@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{0F2CDAE0-30BF-4F6D-8448-586218D60B5B}|Assignment3TestSuite\\Assignment3TestSuite.csproj|c:\\users\\jacob\\documents\\cit\\assignment_3\\cit_json_transport_protocol\\assignment3testsuite\\assignment3testsuite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0F2CDAE0-30BF-4F6D-8448-586218D60B5B}|Assignment3TestSuite\\Assignment3TestSuite.csproj|solutionrelative:assignment3testsuite\\assignment3testsuite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3657910E-042E-4013-AFE6-7DCA93D5AF1F}|Client\\Client.csproj|c:\\users\\jacob\\documents\\cit\\assignment_3\\cit_json_transport_protocol\\client\\clientprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3657910E-042E-4013-AFE6-7DCA93D5AF1F}|Client\\Client.csproj|solutionrelative:client\\clientprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -22,24 +26,36 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Server",
+              "DocumentIndex": 0,
+              "Title": "Assignment3TestSuite.cs",
+              "DocumentMoniker": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\Assignment3TestSuite.cs",
+              "RelativeDocumentMoniker": "Assignment3TestSuite\\Assignment3TestSuite.cs",
+              "ToolTip": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\Assignment3TestSuite.cs",
+              "RelativeToolTip": "Assignment3TestSuite\\Assignment3TestSuite.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-09T10:45:18.918Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Server.csproj",
               "DocumentMoniker": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Server.csproj",
               "RelativeDocumentMoniker": "Server\\Server.csproj",
               "ToolTip": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Server.csproj",
               "RelativeToolTip": "Server\\Server.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-10-09T10:25:59.713Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-09T10:25:59.713Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "ClientProgram.cs",
               "DocumentMoniker": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Client\\ClientProgram.cs",
               "RelativeDocumentMoniker": "Client\\ClientProgram.cs",
@@ -52,7 +68,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ServerProgram.cs",
               "DocumentMoniker": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\ServerProgram.cs",
               "RelativeDocumentMoniker": "Server\\ServerProgram.cs",
@@ -60,8 +76,7 @@
               "RelativeToolTip": "Server\\ServerProgram.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T10:21:05.331Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-09T10:21:05.331Z"
             }
           ]
         }

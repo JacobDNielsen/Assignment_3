@@ -12,3 +12,4 @@ C:\Users\Jacob\Documents\CIT\Assignment_3\CIT_JSON_Transport_Protocol\Server\obj
 C:\Users\Jacob\Documents\CIT\Assignment_3\CIT_JSON_Transport_Protocol\Server\obj\Debug\net8.0\Server.pdb
 C:\Users\Jacob\Documents\CIT\Assignment_3\CIT_JSON_Transport_Protocol\Server\obj\Debug\net8.0\Server.genruntimeconfig.cache
 C:\Users\Jacob\Documents\CIT\Assignment_3\CIT_JSON_Transport_Protocol\Server\obj\Debug\net8.0\ref\Server.dll
+C:\Users\Jacob\Documents\CIT\Assignment_3\CIT_JSON_Transport_Protocol\Server\obj\Debug\net8.0\Server.sourcelink.json
