@@ -1,25 +1,25 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\",
+  "WorkspaceRootPath": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|c:\\users\\admin\\documents\\ruc\\github projects\\assignment_3\\cit_json_transport_protocol\\server\\server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|solutionrelative:server\\server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0F2CDAE0-30BF-4F6D-8448-586218D60B5B}|Assignment3TestSuite\\Assignment3TestSuite.csproj|c:\\users\\admin\\documents\\ruc\\github projects\\assignment_3\\cit_json_transport_protocol\\assignment3testsuite\\assignment3testsuite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0F2CDAE0-30BF-4F6D-8448-586218D60B5B}|Assignment3TestSuite\\Assignment3TestSuite.csproj|c:\\users\\jacob\\documents\\cit\\assignment_3\\cit_json_transport_protocol\\assignment3testsuite\\assignment3testsuite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0F2CDAE0-30BF-4F6D-8448-586218D60B5B}|Assignment3TestSuite\\Assignment3TestSuite.csproj|solutionrelative:assignment3testsuite\\assignment3testsuite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|c:\\users\\admin\\documents\\ruc\\github projects\\assignment_3\\cit_json_transport_protocol\\server\\serverprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|c:\\users\\jacob\\documents\\cit\\assignment_3\\cit_json_transport_protocol\\server\\server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|solutionrelative:server\\server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|c:\\users\\jacob\\documents\\cit\\assignment_3\\cit_json_transport_protocol\\server\\serverprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|solutionrelative:server\\serverprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|c:\\users\\admin\\documents\\ruc\\github projects\\assignment_3\\cit_json_transport_protocol\\server\\response.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|c:\\users\\jacob\\documents\\cit\\assignment_3\\cit_json_transport_protocol\\server\\response.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|solutionrelative:server\\response.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|c:\\users\\admin\\documents\\ruc\\github projects\\assignment_3\\cit_json_transport_protocol\\server\\request.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|c:\\users\\jacob\\documents\\cit\\assignment_3\\cit_json_transport_protocol\\server\\request.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|solutionrelative:server\\request.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -30,15 +30,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 5,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 4,
               "Title": "Request.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Request.cs",
+              "DocumentMoniker": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Request.cs",
               "RelativeDocumentMoniker": "Server\\Request.cs",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Request.cs",
+              "ToolTip": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Request.cs",
               "RelativeToolTip": "Server\\Request.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -48,9 +52,9 @@
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "Response.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Response.cs",
+              "DocumentMoniker": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Response.cs",
               "RelativeDocumentMoniker": "Server\\Response.cs",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Response.cs",
+              "ToolTip": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Response.cs",
               "RelativeToolTip": "Server\\Response.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAuwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -60,9 +64,9 @@
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "ServerProgram.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\ServerProgram.cs",
+              "DocumentMoniker": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\ServerProgram.cs",
               "RelativeDocumentMoniker": "Server\\ServerProgram.cs",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\ServerProgram.cs",
+              "ToolTip": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\ServerProgram.cs",
               "RelativeToolTip": "Server\\ServerProgram.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -71,29 +75,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Server.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Server.cs",
+              "DocumentMoniker": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Server.cs",
               "RelativeDocumentMoniker": "Server\\Server.cs",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Server.cs",
+              "ToolTip": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Server.cs",
               "RelativeToolTip": "Server\\Server.cs",
-              "ViewState": "AgIAAFwAAAAAAAAAAAAAwF8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAFUAAAAAAAAAAADwv1gAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-09T19:20:11.657Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Assignment3TestSuite.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\Assignment3TestSuite.cs",
+              "DocumentMoniker": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\Assignment3TestSuite.cs",
               "RelativeDocumentMoniker": "Assignment3TestSuite\\Assignment3TestSuite.cs",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\Assignment3TestSuite.cs",
+              "ToolTip": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\Assignment3TestSuite.cs",
               "RelativeToolTip": "Assignment3TestSuite\\Assignment3TestSuite.cs",
-              "ViewState": "AgIAAH0AAAAAAAAAAAAuwE8CAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAIkAAAAAAAAAAAAuwI8AAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-09T11:26:03.695Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
             }
           ]
         }

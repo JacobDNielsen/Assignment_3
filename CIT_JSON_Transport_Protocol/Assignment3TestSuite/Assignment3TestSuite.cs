@@ -134,7 +134,7 @@ namespace Assignment3TestSuite
 
             Assert.Contains("illegal date", response.Status.ToLower());
         }
-#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
+
         /* Body Tests    */
 
         [Theory]
@@ -158,7 +158,7 @@ namespace Assignment3TestSuite
             Assert.Contains("missing body", response.Status.ToLower());
         }
 
-
+#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
         [Fact]
         public void Constraint_RequestUpdateWithoutJsonBody_IllegalBodyError()
         {

@@ -66,6 +66,7 @@ public class Server
                     return; //Could possibly use better error handling here!
                 }
                 string[] validMethods = ["create", "read", "update", "delete", "echo"];
+                string[] validMethodsForBody = ["create", "update", "echo"];
 
                 if (!validMethods.Contains(request.Method))
                 {
@@ -96,6 +97,18 @@ public class Server
                     WriteToStream(stream, json);
 
                     Console.WriteLine("Date: " + request.Date);
+                }
+
+
+                else if (validMethodsForBody.Contains(request.Method) && request.Body == null)
+                {
+                    var response = new Response
+                    {
+                        Status = "missing body"
+                    };
+                    var json = ToJson(response);
+                    WriteToStream(stream, json);
+
                 }
             }
         }
