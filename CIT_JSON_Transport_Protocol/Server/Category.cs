@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class Categori
+public class Category
 {
 
     private Dictionary<int, string> CategoriesAPI =
@@ -20,6 +20,11 @@ public class Categori
     public Dictionary<int, string> GetCategories()
     {
         return CategoriesAPI;
+    }
+
+    public string GetById(int id)
+    {
+        return "No one";
     }
 
 }

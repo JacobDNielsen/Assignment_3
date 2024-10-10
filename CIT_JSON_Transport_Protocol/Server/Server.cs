@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 
 public class Server
 {
+    Category category = new Category();
+
     private readonly int _port;
 
     public Server(int port)
@@ -14,7 +16,6 @@ public class Server
     }
     public void Run()
     {
-
 
         var server = new TcpListener(IPAddress.Loopback, _port); // IPv4 127.0.0.1 IPv6 ::1
 
@@ -29,10 +30,6 @@ public class Server
 
             Task.Run(() => HandleClient(client)); // Vi laver en ny thread for hver client, så vi kan håndtere flere clients på samme tid. Nødvendigt, da vi i test environment kører tests på flere threads, og denne tillader altså server at kører med flere threads. 
 
-
-
-
-
         }
     }
     private void HandleClient(TcpClient client)
@@ -46,6 +43,7 @@ public class Server
             Console.WriteLine("Message from client: " + msg);
 
             var regexItem = new Regex("^[0-9]*$");
+            var regexItemForID = new Regex(@"/(\d+)$");
             var response = new Response();
 
             if (msg == "{}")
@@ -65,6 +63,7 @@ public class Server
                 string[] validMethods = ["create", "read", "update", "delete", "echo"];
                 string[] validMethodsForBody = ["create", "update", "echo"];
                 string[] validMethodsRequiresJsonBody = ["create", "update"];
+                string[] validMethodsRequireID = ["read", "update", "delete"];
 
                 if (!validMethods.Contains(request.Method))
                 {
@@ -73,7 +72,6 @@ public class Server
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
-
                 else if (request.Path == null && request.Method != "echo")
                 {
                     response.Status = "missing resource";
@@ -121,6 +119,22 @@ public class Server
 
                     var json = ToJson(response);
                     WriteToStream(stream, json);
+                }
+                if (validMethodsRequireID.Contains(request.Method))
+                {
+                    int id = -1;
+                    if (!regexItemForID.IsMatch(request.Path))
+                    {
+                        response.Status = "4 Bad Request";
+
+                        var json = ToJson(response);
+                        WriteToStream(stream, json);
+                    }
+                    else
+                    {
+                        id = Int32.Parse(request.Path);
+                        // send this to the category dict
+                    }
                 }
             }
         }

@@ -77,7 +77,6 @@ namespace Assignment3TestSuite
             Assert.Contains("illegal method", response.Status.ToLower());
         }
 
-
         [Theory]
         [InlineData("create")]
         [InlineData("read")]
@@ -113,7 +112,6 @@ namespace Assignment3TestSuite
 
             Assert.Contains("missing date", response.Status.ToLower());
         }
-
 
 
         [Fact]
@@ -179,7 +177,6 @@ namespace Assignment3TestSuite
 
         }
 
-
         /* Echo Test */
         [Fact]
         public void Echo_RequestWithBody_ReturnsBody()
@@ -228,7 +225,6 @@ namespace Assignment3TestSuite
             Assert.Equal(expectedResponse.ToJson().ToLower(), response.ToJson().ToLower());
         }
 
-#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
 
         [Fact]
         public void Constraint_RequestWithInvalidPathId_StatusBadRequest()
@@ -249,6 +245,7 @@ namespace Assignment3TestSuite
 
             Assert.Equal(expectedResponse.ToJson().ToLower(), response.ToJson().ToLower());
         }
+#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
 
         [Fact]
         public void Constraint_CreateWithPathId_StatusBadRequest()
