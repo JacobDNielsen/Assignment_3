@@ -120,6 +120,13 @@ public class Server
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
+                if (request.Method == "create" && (request.Path != "/api/categories" || request.Path != "/api/categories/"))
+                {
+                    response.Status = "4 Bad Request";
+
+                    var json = ToJson(response);
+                    WriteToStream(stream, json);
+                }
                 if (validMethodsRequireID.Contains(request.Method))
                 {
                     int id = -1;
