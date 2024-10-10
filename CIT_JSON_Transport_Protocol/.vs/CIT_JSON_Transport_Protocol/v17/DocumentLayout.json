@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{0F2CDAE0-30BF-4F6D-8448-586218D60B5B}|Assignment3TestSuite\\Assignment3TestSuite.csproj|solutionrelative:assignment3testsuite\\assignment3testsuite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|c:\\users\\jacob\\documents\\cit\\assignment_3\\cit_json_transport_protocol\\server\\server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|solutionrelative:server\\server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|c:\\users\\jacob\\documents\\cit\\assignment_3\\cit_json_transport_protocol\\server\\serverprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|solutionrelative:server\\serverprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|c:\\users\\jacob\\documents\\cit\\assignment_3\\cit_json_transport_protocol\\server\\server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|solutionrelative:server\\server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7E3FD85B-5987-4D45-AF62-09E6EC715625}|Server\\Server.csproj|c:\\users\\jacob\\documents\\cit\\assignment_3\\cit_json_transport_protocol\\server\\response.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -53,7 +53,7 @@
               "RelativeDocumentMoniker": "Server\\Response.cs",
               "ToolTip": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Response.cs",
               "RelativeToolTip": "Server\\Response.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAQAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-09T20:06:33.91Z",
               "EditorCaption": ""
@@ -61,27 +61,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Server.cs",
-              "DocumentMoniker": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Server.cs",
-              "RelativeDocumentMoniker": "Server\\Server.cs",
-              "ToolTip": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Server.cs",
-              "RelativeToolTip": "Server\\Server.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T19:20:11.657Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "ServerProgram.cs",
               "DocumentMoniker": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\ServerProgram.cs",
               "RelativeDocumentMoniker": "Server\\ServerProgram.cs",
               "ToolTip": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\ServerProgram.cs",
               "RelativeToolTip": "Server\\ServerProgram.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-09T12:07:33.058Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Server.cs",
+              "DocumentMoniker": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Server.cs",
+              "RelativeDocumentMoniker": "Server\\Server.cs",
+              "ToolTip": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Server.cs",
+              "RelativeToolTip": "Server\\Server.cs",
+              "ViewState": "AgIAADcAAAAAAAAAAAAAAFEAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-09T19:20:11.657Z",
               "EditorCaption": ""
             },
             {
@@ -92,10 +92,14 @@
               "RelativeDocumentMoniker": "Assignment3TestSuite\\Assignment3TestSuite.cs",
               "ToolTip": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\Assignment3TestSuite.cs",
               "RelativeToolTip": "Assignment3TestSuite\\Assignment3TestSuite.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAIwFwAAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-09T11:26:03.695Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
               "$type": "Bookmark",

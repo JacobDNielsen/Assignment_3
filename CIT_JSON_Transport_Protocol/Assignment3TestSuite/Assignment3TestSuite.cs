@@ -32,10 +32,10 @@ namespace Assignment3TestSuite
 
 
         //////////////////////////////////////////////////////////
-/// 
-/// Testing Constrains
-/// 
-////////////////////////////////////////////////////////// 
+        /// 
+        /// Testing Constrains
+        /// 
+        ////////////////////////////////////////////////////////// 
 
         [Fact]
         public void Constraint_ConnectionWithoutRequest_ShouldConnect()
@@ -77,7 +77,7 @@ namespace Assignment3TestSuite
             Assert.Contains("illegal method", response.Status.ToLower());
         }
 
-#if RUN_ALL_TESTS //Hvis denne er defineret, så kører vi alle tests.
+
         [Theory]
         [InlineData("create")]
         [InlineData("read")]
@@ -91,6 +91,7 @@ namespace Assignment3TestSuite
             {
                 Method = method,
                 Date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString()
+
             };
 
             client.SendRequest(request.ToJson());
@@ -99,7 +100,7 @@ namespace Assignment3TestSuite
 
             Assert.Contains("missing resource", response.Status.ToLower());
         }
-
+#if RUN_ALL_TESTS //Hvis denne er defineret, så kører vi alle tests.
         /* Date Tests    */
 
         [Fact]
@@ -639,7 +640,7 @@ namespace Assignment3TestSuite
                 var responseData = Encoding.UTF8.GetString(memStream.ToArray());
                 //return JsonSerializer.Deserialize<Response>(responseData); Denne er kommenteret ud, da vi bruger PropertyNamingPolicy is Server. Hvis vi havde brugt denne, vil den læse Json data som pascal case. Vil vi ikke, da vi i ServerProgram læser det som CamelCase. På denne måde er det ens på begge sider, og vi undgår NullReferenceException
                 // if the naming policy is used you need to do the same on the server side
-                return JsonSerializer.Deserialize<Response>(responseData, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+                return JsonSerializer.Deserialize<Response>(responseData, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
             }
         }
     }
