@@ -108,12 +108,19 @@ public class Server
                         WriteToStream(stream, json);
                     }
                 }
-                else if (true)
+                else if (request.Method == "echo")
                 {
                     response.Body = request.Body;
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                     Console.WriteLine("Body test: " + response.Body);
+                }
+                else if (request.Method == "read" && request.Path != "/api/categories")
+                {
+                    response.Status = "4 Bad Request";
+
+                    var json = ToJson(response);
+                    WriteToStream(stream, json);
                 }
             }
         }

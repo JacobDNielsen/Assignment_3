@@ -1,4 +1,4 @@
-//#define RUN_ALL_TESTS //Hvis denne defines, s� k�rer vi alle tests.
+//#define RUN_ALL_TESTS //Hvis denne defines, saa koerer vi alle tests.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -199,7 +199,6 @@ namespace Assignment3TestSuite
             Assert.Equal("Hello World", response.Body);
 
         }
-#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
 
         //////////////////////////////////////////////////////////
         /// 
@@ -228,6 +227,8 @@ namespace Assignment3TestSuite
 
             Assert.Equal(expectedResponse.ToJson().ToLower(), response.ToJson().ToLower());
         }
+
+#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
 
         [Fact]
         public void Constraint_RequestWithInvalidPathId_StatusBadRequest()
