@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-
 public class Server
 {
     private readonly int _port;
@@ -47,14 +46,12 @@ public class Server
             Console.WriteLine("Message from client: " + msg);
 
             var regexItem = new Regex("^[0-9]*$");
-
+            var response = new Response();
 
             if (msg == "{}")
             {
-                var response = new Response
-                {
-                    Status = "missing method, missing date"
-                };
+                response.Status = "missing method, missing date";
+                
                 var json = ToJson(response);
                 WriteToStream(stream, json);
             }
@@ -67,48 +64,50 @@ public class Server
                 }
                 string[] validMethods = ["create", "read", "update", "delete", "echo"];
                 string[] validMethodsForBody = ["create", "update", "echo"];
+                string[] validMethodsRequiresJsonBody = ["create", "update"];
 
                 if (!validMethods.Contains(request.Method))
                 {
-                    var response = new Response
-                    {
-                        Status = "illegal method"
-                    };
+                    response.Status = "illegal method";
+                    
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
 
                 else if (request.Path == null)
                 {
-                    var response = new Response
-                    {
-                        Status = "missing resource"
-                    };
+                    response.Status = "missing resource";
+                    
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
-                else if (!regexItem.IsMatch(request.Date.ToString())) // 1728553240
+                else if (!regexItem.IsMatch(request.Date.ToString())) 
                 {
-                    var response = new Response
-                    {
-                        Status = "illegal date"
-                    };
+                    response.Status = "illegal date";
+                    
                     var json = ToJson(response);
                     WriteToStream(stream, json);
-
-                    Console.WriteLine("Date: " + request.Date);
                 }
-
-
                 else if (validMethodsForBody.Contains(request.Method) && request.Body == null)
                 {
-                    var response = new Response
-                    {
-                        Status = "missing body"
-                    };
+                    response.Status = "missing body";
+                    
                     var json = ToJson(response);
                     WriteToStream(stream, json);
-
+                }
+                else if (validMethodsRequiresJsonBody.Contains(request.Method))
+                {
+                    try
+                    {
+                         JsonDocument.Parse(request.Body); // do something if it is ok
+                    }
+                    catch 
+                    {
+                        response.Status = "illegal body";
+                    
+                        var json = ToJson(response);
+                        WriteToStream(stream, json);
+                    }
                 }
             }
         }
