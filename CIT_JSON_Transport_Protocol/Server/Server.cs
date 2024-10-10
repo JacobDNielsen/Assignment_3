@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 
 public class Server
@@ -45,7 +46,10 @@ public class Server
 
             Console.WriteLine("Message from client: " + msg);
 
-            if (msg == "{}") 
+            var regexItem = new Regex("^[0-9]*$");
+
+
+            if (msg == "{}")
             {
                 var response = new Response
                 {
@@ -81,6 +85,17 @@ public class Server
                     };
                     var json = ToJson(response);
                     WriteToStream(stream, json);
+                }
+                else if (!regexItem.IsMatch(request.Date.ToString())) // 1728553240
+                {
+                    var response = new Response
+                    {
+                        Status = "illegal date"
+                    };
+                    var json = ToJson(response);
+                    WriteToStream(stream, json);
+
+                    Console.WriteLine("Date: " + request.Date);
                 }
             }
         }

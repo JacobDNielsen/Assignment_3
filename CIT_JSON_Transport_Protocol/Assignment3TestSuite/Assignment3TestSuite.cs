@@ -1,4 +1,4 @@
-//#define RUN_ALL_TESTS //Hvis denne defines, så kører vi alle tests.
+//#define RUN_ALL_TESTS //Hvis denne defines, sï¿½ kï¿½rer vi alle tests.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -113,7 +113,8 @@ namespace Assignment3TestSuite
 
             Assert.Contains("missing date", response.Status.ToLower());
         }
-#if RUN_ALL_TESTS //Hvis denne er defineret, så kører vi alle tests.
+
+
 
         [Fact]
         public void Constraint_RequestWhereDateIsNotUnixTime_IllegalDateError()
@@ -133,7 +134,7 @@ namespace Assignment3TestSuite
 
             Assert.Contains("illegal date", response.Status.ToLower());
         }
-
+#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
         /* Body Tests    */
 
         [Theory]
@@ -638,7 +639,7 @@ namespace Assignment3TestSuite
                 } while (bytesread == 2048);
 
                 var responseData = Encoding.UTF8.GetString(memStream.ToArray());
-                //return JsonSerializer.Deserialize<Response>(responseData); Denne er kommenteret ud, da vi bruger PropertyNamingPolicy is Server. Hvis vi havde brugt denne, vil den læse Json data som pascal case. Vil vi ikke, da vi i ServerProgram læser det som CamelCase. På denne måde er det ens på begge sider, og vi undgår NullReferenceException
+                //return JsonSerializer.Deserialize<Response>(responseData); Denne er kommenteret ud, da vi bruger PropertyNamingPolicy is Server. Hvis vi havde brugt denne, vil den lï¿½se Json data som pascal case. Vil vi ikke, da vi i ServerProgram lï¿½ser det som CamelCase. Pï¿½ denne mï¿½de er det ens pï¿½ begge sider, og vi undgï¿½r NullReferenceException
                 // if the naming policy is used you need to do the same on the server side
                 return JsonSerializer.Deserialize<Response>(responseData, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
             }
