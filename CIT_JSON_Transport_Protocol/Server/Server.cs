@@ -51,7 +51,7 @@ public class Server
             if (msg == "{}")
             {
                 response.Status = "missing method, missing date";
-                
+
                 var json = ToJson(response);
                 WriteToStream(stream, json);
             }
@@ -69,29 +69,28 @@ public class Server
                 if (!validMethods.Contains(request.Method))
                 {
                     response.Status = "illegal method";
-                    
+
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
 
-                else if (request.Path == null)
+                else if (request.Path == null && request.Method != "echo")
                 {
                     response.Status = "missing resource";
-                    
+
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
-                else if (!regexItem.IsMatch(request.Date.ToString())) 
+                else if (!regexItem.IsMatch(request.Date.ToString()))
                 {
                     response.Status = "illegal date";
-                    
+
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
                 else if (validMethodsForBody.Contains(request.Method) && request.Body == null)
                 {
                     response.Status = "missing body";
-                    
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
@@ -99,15 +98,22 @@ public class Server
                 {
                     try
                     {
-                         JsonDocument.Parse(request.Body); // do something if it is ok
+                        JsonDocument.Parse(request.Body); // do something if it is ok
                     }
-                    catch 
+                    catch
                     {
                         response.Status = "illegal body";
-                    
+
                         var json = ToJson(response);
                         WriteToStream(stream, json);
                     }
+                }
+                else if (true)
+                {
+                    response.Body = request.Body;
+                    var json = ToJson(response);
+                    WriteToStream(stream, json);
+                    Console.WriteLine("Body test: " + response.Body);
                 }
             }
         }

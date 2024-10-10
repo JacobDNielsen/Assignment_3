@@ -178,7 +178,7 @@ namespace Assignment3TestSuite
             Assert.Contains("illegal body", response.Status.ToLower());
 
         }
-#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
+
 
         /* Echo Test */
         [Fact]
@@ -199,6 +199,7 @@ namespace Assignment3TestSuite
             Assert.Equal("Hello World", response.Body);
 
         }
+#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
 
         //////////////////////////////////////////////////////////
         /// 
