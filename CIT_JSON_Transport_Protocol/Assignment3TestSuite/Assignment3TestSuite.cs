@@ -100,7 +100,6 @@ namespace Assignment3TestSuite
 
             Assert.Contains("missing resource", response.Status.ToLower());
         }
-#if RUN_ALL_TESTS //Hvis denne er defineret, så kører vi alle tests.
         /* Date Tests    */
 
         [Fact]
@@ -114,6 +113,7 @@ namespace Assignment3TestSuite
 
             Assert.Contains("missing date", response.Status.ToLower());
         }
+#if RUN_ALL_TESTS //Hvis denne er defineret, så kører vi alle tests.
 
         [Fact]
         public void Constraint_RequestWhereDateIsNotUnixTime_IllegalDateError()

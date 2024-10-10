@@ -45,11 +45,11 @@ public class Server
 
             Console.WriteLine("Message from client: " + msg);
 
-            if (msg == "{}")
+            if (msg == "{}") 
             {
                 var response = new Response
                 {
-                    Status = "missing method"
+                    Status = "missing method, missing date"
                 };
                 var json = ToJson(response);
                 WriteToStream(stream, json);
@@ -83,12 +83,6 @@ public class Server
                     WriteToStream(stream, json);
                 }
             }
-
-
-
-
-
-
         }
         catch { }
     }
