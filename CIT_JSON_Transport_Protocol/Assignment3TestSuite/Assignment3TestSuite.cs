@@ -267,7 +267,6 @@ namespace Assignment3TestSuite
 
             Assert.Equal(expectedResponse.ToJson().ToLower(), response.ToJson().ToLower());
         }
-#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
         [Fact]
         public void Constraint_UpdateWithOutPathId_StatusBadRequest()
         {
@@ -310,7 +309,6 @@ namespace Assignment3TestSuite
         }
 
 
-
         /* Read tests */
 
         [Fact]
@@ -344,6 +342,7 @@ namespace Assignment3TestSuite
             Assert.Equal(expectedResponse.ToJson(), response.ToJson());
         }
 
+#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
         [Fact]
         public void Request_ReadCategoryWithValidId_StatusOkAndCategoryInBody()
         {

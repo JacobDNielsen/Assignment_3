@@ -5508,19 +5508,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {}
+    "C:\\Users\\Jacob\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\Assignment3TestSuite.csproj",
+      "projectUniqueName": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\Assignment3TestSuite.csproj",
       "projectName": "Assignment3TestSuite",
-      "projectPath": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\Assignment3TestSuite.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Documents\\RUC\\github projects\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\obj\\",
+      "projectPath": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\Assignment3TestSuite.csproj",
+      "packagesPath": "C:\\Users\\Jacob\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Jacob\\Documents\\CIT\\Assignment_3\\CIT_JSON_Transport_Protocol\\Assignment3TestSuite\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Jacob\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5528,6 +5528,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -5584,7 +5585,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

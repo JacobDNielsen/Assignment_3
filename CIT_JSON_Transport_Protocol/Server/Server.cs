@@ -120,6 +120,13 @@ public class Server
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
+                if (request.Method == "read" && !regexItemForID.IsMatch(request.Path)) //If path is not xxxx/number
+                {
+                    response.Status = "1 Ok";
+                    response.Body = category.GetCategories();
+                    var json = ToJson(response);
+                    WriteToStream(stream, json);
+                }
                 if (request.Method == "create" && (request.Path != "/api/categories" || request.Path != "/api/categories/"))
                 {
                     response.Status = "4 Bad Request";
@@ -127,6 +134,7 @@ public class Server
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
+
                 if (validMethodsRequireID.Contains(request.Method))
                 {
                     int id = -1;
