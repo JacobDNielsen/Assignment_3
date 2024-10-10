@@ -113,17 +113,32 @@ public class Server
                     WriteToStream(stream, json);
                     Console.WriteLine("Body test: " + response.Body);
                 }
-                else if (request.Method == "read" && request.Path != "/api/categories")
+                else if (request.Method == "read" && !regexItemForID.IsMatch(request.Path)) // should match on if there is numbers and /
                 {
+                    Console.WriteLine(  "Called read and categories, no id");
                     response.Status = "4 Bad Request";
 
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
-                if (request.Method == "read" && !regexItemForID.IsMatch(request.Path)) //If path is not xxxx/number
+                if (request.Method == "read" && regexItemForID.IsMatch(request.Path)) //If path is not xxxx/number
                 {
                     response.Status = "1 Ok";
                     response.Body = category.GetCategories();
+
+                    var json = ToJson(response);
+                    WriteToStream(stream, json);
+                }
+                if (request.Method == "read" && regexItemForID.IsMatch(request.Path))
+                {
+                    string[] pathArray = request.Path.Split('/');
+                    string value = pathArray[^1]; // "1"
+                    Console.WriteLine(value);
+
+
+                    response.Status = "1 Ok";
+                    response.Body = category.GetCategoryByID(Int32.Parse(value));
+
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }

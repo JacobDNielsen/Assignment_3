@@ -7,7 +7,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Xunit;
 
 namespace Assignment3TestSuite
 {
@@ -342,7 +341,6 @@ namespace Assignment3TestSuite
             Assert.Equal(expectedResponse.ToJson(), response.ToJson());
         }
 
-#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
         [Fact]
         public void Request_ReadCategoryWithValidId_StatusOkAndCategoryInBody()
         {
@@ -366,6 +364,7 @@ namespace Assignment3TestSuite
 
             Assert.Equal(expectedResponse.ToJson(), response.ToJson());
         }
+#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
 
         [Fact]
         public void Request_ReadCategoryWithInvalidId_StatusNotFound()

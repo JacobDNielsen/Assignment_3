@@ -7,11 +7,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-
 public class Category
 {
-
-
     List<object> CategoriesAPI = new List<object>
             {
                 new {cid = 1, name = "Beverages"},
@@ -21,15 +18,17 @@ public class Category
 
     public string GetCategories()
     {
-        //return GetCategoriesToResponse(CategoriesAPI);
         return JsonSerializer.Serialize(CategoriesAPI, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
 
+    public string GetCategoryByID(int id)
+    {
+        return JsonSerializer.Serialize(CategoriesAPI[id], new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+    }
 
 
     public string GetById(int id)
     {
         return "No one";
     }
-
 }
