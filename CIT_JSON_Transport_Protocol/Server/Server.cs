@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.ComponentModel.Design;
 
 public class Server
 {
@@ -32,19 +33,30 @@ public class Server
 
         }
     }
-    private void ValidMethods(Request req)
+    private void ValidPaths(Request req)
     {
         const string partialPath = "/api/categories"; //We hardcode the correct path here, as we only have one path.
         Category cat = new Category();
-
-        switch (req.Path)
+        IEnumerable<int> query = from CategoryObj in cat.CategoriesAPI
+                                 select CategoryObj.cid;
+        foreach (int cid in query)
         {
-            case partialPath:
-                Console.WriteLine("path is correct");
-                break;
-            case partialPath + $"/{cat.CategoriesAPI.Where(x => x.Cont)}/1":
-                Console.WriteLine("path is correct");
-                break;
+            string testvar = partialPath + $"/{cid}";
+
+            if (req.Path == testvar)
+            {
+                Console.WriteLine($"Path {cid} was accessed");
+
+            }
+            else if (req.Path == partialPath)
+            {
+                Console.WriteLine("you accessed the whole categories table");
+            }
+
+            else
+            {
+                Console.WriteLine("Path does not exist");
+            }
 
         }
         //string[] validMethods = ["create", "read", "update", "delete", "echo"];
