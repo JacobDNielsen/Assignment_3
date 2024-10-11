@@ -364,7 +364,7 @@ namespace Assignment3TestSuite
 
             Assert.Equal(expectedResponse.ToJson(), response.ToJson());
         }
-#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
+
 
         [Fact]
         public void Request_ReadCategoryWithInvalidId_StatusNotFound()
@@ -383,6 +383,7 @@ namespace Assignment3TestSuite
 
             Assert.Contains("5 not found", response.Status.ToLower());
         }
+
 
 
         /* Update tests  */
@@ -486,7 +487,7 @@ namespace Assignment3TestSuite
             Assert.Contains("5 not found", response.Status.ToLower());
         }
 
-
+#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
         /* Create Tests  */
 
         [Fact]

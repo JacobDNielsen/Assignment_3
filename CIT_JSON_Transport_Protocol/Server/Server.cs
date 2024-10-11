@@ -3,10 +3,11 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Net.Security;
 
 public class Server
 {
-    Category category = new Category();
+    CategoryList category = new CategoryList();
 
     private readonly int _port;
 
@@ -43,7 +44,7 @@ public class Server
             Console.WriteLine("Message from client: " + msg);
 
             var regexItem = new Regex("^[0-9]*$");
-            var regexItemForID = new Regex(@"/(\d+)$");
+            var regexItemForID = new Regex(@"/?(\d+)$");
             var response = new Response();
 
             if (msg == "{}")
@@ -113,15 +114,19 @@ public class Server
                     WriteToStream(stream, json);
                     Console.WriteLine("Body test: " + response.Body);
                 }
-                else if (request.Method == "read" && !regexItemForID.IsMatch(request.Path)) // should match on if there is numbers and /
+                else if (request.Method == "read" && !regexItemForID.IsMatch(request.Path) &&
+                    (request.Path != "/api/categories" && request.Path != "/api/categories/")) // should match on if there is numbers and /
                 {
-                    Console.WriteLine(  "Called read and categories, no id");
+                    Console.WriteLine("Called read and categories, no id");
                     response.Status = "4 Bad Request";
 
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
-                if (request.Method == "read" && regexItemForID.IsMatch(request.Path)) //If path is not xxxx/number
+
+
+                if (request.Method == "read" &&
+                    (request.Path == "/api/categories" || request.Path == "/api/categories/"))    //If path is not xxxx/number
                 {
                     response.Status = "1 Ok";
                     response.Body = category.GetCategories();
@@ -129,19 +134,88 @@ public class Server
                     var json = ToJson(response);
                     WriteToStream(stream, json);
                 }
+
+
+
+
                 if (request.Method == "read" && regexItemForID.IsMatch(request.Path))
                 {
                     string[] pathArray = request.Path.Split('/');
-                    string value = pathArray[^1]; // "1"
+                    int value = Int32.Parse(pathArray[^1]); // "1"
                     Console.WriteLine(value);
+                    string json;
 
+                    if (category.GetcategoryListCount() < value)
+                    {
+                        response.Status = "5 not found";
+                        Console.WriteLine("do something");
+                        json = ToJson(response);
+                        WriteToStream(stream, json);
+                    }
+                    else
+                    {
+                        response.Status = "1 Ok";
+                        response.Body = category.GetCategoryByID(value);
 
-                    response.Status = "1 Ok";
-                    response.Body = category.GetCategoryByID(Int32.Parse(value));
+                        json = ToJson(response);
+                        WriteToStream(stream, json);
+                    }
 
-                    var json = ToJson(response);
-                    WriteToStream(stream, json);
                 }
+
+                if (request.Method == "update" && regexItemForID.IsMatch(request.Path))
+                {
+
+                    string[] pathArray = request.Path.Split('/');
+                    int value = Int32.Parse(pathArray[^1]); // "1"
+                    Console.WriteLine(value);
+                    string? json = request.Body;
+
+                    if (category.GetcategoryListCount() < value)
+                    {
+                        //response.Status = "5 not found";
+                        //Console.WriteLine("5 not found!!!");
+                        //json = ToJson(response);
+                        //WriteToStream(stream, json);
+                        //return;
+                    }
+
+
+                    try
+                    {
+                        Category? categoryOB = FromJsonCategoryOB(json);
+
+                        Console.WriteLine("categoryOB: " + categoryOB.Name);
+                        category.UpdateCategoryByID(categoryOB.Name, value);
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("fejl");
+                        throw;
+                    }
+
+                    category.GetCategoryByID(value);
+                    response.Status = "3 updated";
+
+                    json = ToJson(response);
+                    WriteToStream(stream, json);
+
+                }
+
+
+
+                //else if (request.Method == "update" && regexItemForID.IsMatch(request.Path))
+                //{
+                //    response.Status = "5 not found";
+                //    Console.WriteLine("5 not found!!!");
+                //    var json = ToJson(response);
+                //    WriteToStream(stream, json);
+                //}
+
+
+
+
+
                 if (request.Method == "create" && (request.Path != "/api/categories" || request.Path != "/api/categories/"))
                 {
                     response.Status = "4 Bad Request";
@@ -192,6 +266,13 @@ public class Server
     public static Request? FromJson(string element)
     {
         return JsonSerializer.Deserialize<Request>(element, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+    }
+    public static Category? FromJsonCategoryOB(string element)
+    {
+        Console.WriteLine(element);
+        Category? categoryOB = JsonSerializer.Deserialize<Category>(element, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        Console.WriteLine(categoryOB);
+        return categoryOB;
     }
 }
 

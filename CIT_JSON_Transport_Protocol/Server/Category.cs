@@ -4,16 +4,41 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+
+public class CategoryOB
+{
+    [JsonPropertyName("cid")]
+    public int cid { get; set; }
+    [JsonPropertyName("name")]
+    public string name { get; set; }
+    public CategoryOB(int _cid, string _name)
+    {
+        cid = _cid;
+        name = _name;
+    }
+}
+
 public class Category
 {
-    List<object> CategoriesAPI = new List<object>
+    [JsonPropertyName("cid")]
+    public int Id { get; set; }
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+
+}
+
+
+public class CategoryList
+{
+    List<CategoryOB> CategoriesAPI = new List<CategoryOB>
             {
-                new {cid = 1, name = "Beverages"},
-                new {cid = 2, name = "Condiments"},
-                new {cid = 3, name = "Confections"}
+                new CategoryOB(1, "Beverages"),
+                new CategoryOB(2, "Condiments"),
+                new CategoryOB(3, "Confections")
             };
 
     public string GetCategories()
@@ -23,12 +48,24 @@ public class Category
 
     public string GetCategoryByID(int id)
     {
-        return JsonSerializer.Serialize(CategoriesAPI[id], new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        return JsonSerializer.Serialize(CategoriesAPI[id - 1], new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
 
 
-    public string GetById(int id)
+
+
+
+    public int GetcategoryListCount()
     {
-        return "No one";
+        return CategoriesAPI.Count;
+    }
+
+
+
+    public void UpdateCategoryByID(string name, int id)
+    {
+        CategoriesAPI[id - 1].name = name;
+        Console.WriteLine($"cid: {CategoriesAPI[id - 1].cid} , name: {CategoriesAPI[id - 1].name}");
+
     }
 }
