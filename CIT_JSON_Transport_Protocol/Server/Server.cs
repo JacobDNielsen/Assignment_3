@@ -32,6 +32,25 @@ public class Server
 
         }
     }
+    private void ValidMethods(Request req)
+    {
+        const string partialPath = "/api/categories"; //We hardcode the correct path here, as we only have one path.
+        Category cat = new Category();
+
+        switch (req.Path)
+        {
+            case partialPath:
+                Console.WriteLine("path is correct");
+                break;
+            case partialPath + $"/{cat.CategoriesAPI.Where(x => x.Cont)}/1":
+                Console.WriteLine("path is correct");
+                break;
+
+        }
+        //string[] validMethods = ["create", "read", "update", "delete", "echo"];
+
+    }
+
     private void HandleClient(TcpClient client)
     {
         try
@@ -115,7 +134,7 @@ public class Server
                 }
                 else if (request.Method == "read" && !regexItemForID.IsMatch(request.Path)) // should match on if there is numbers and /
                 {
-                    Console.WriteLine(  "Called read and categories, no id");
+                    Console.WriteLine("Called read and categories, no id");
                     response.Status = "4 Bad Request";
 
                     var json = ToJson(response);

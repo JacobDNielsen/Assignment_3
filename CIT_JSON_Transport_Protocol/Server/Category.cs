@@ -7,13 +7,27 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+public class CategoryObj
+{
+    public int cid { get; set; }
+    public string name { get; set; }
+    public CategoryObj(int _cid, string _name)
+    {
+        cid = _cid;
+        name = _name;
+    }
+
+
+}
+
 public class Category
 {
-    List<object> CategoriesAPI = new List<object>
+    public List<CategoryObj> CategoriesAPI = new List<CategoryObj>
             {
-                new {cid = 1, name = "Beverages"},
-                new {cid = 2, name = "Condiments"},
-                new {cid = 3, name = "Confections"}
+
+                new CategoryObj (1,"Beverages"),
+                new CategoryObj (2, "Beverages"),
+                new CategoryObj (3, "Beverages"),
             };
 
     public string GetCategories()
