@@ -9,6 +9,7 @@ public class Server
     CategoryList category = new CategoryList();
     Regex regexOnlyDigit = new Regex("^[0-9]*$");
     Regex regexItemForID = new Regex(@"/(\d+)$");
+    Regex regexValidPathReadAll = new Regex(@"^/api/categories/?$");
     Regex regexDigitAtEndOfString = new Regex("[0-9]*$");
 
     private readonly int _port;
@@ -19,9 +20,7 @@ public class Server
     }
     public void Run()
     {
-
         var server = new TcpListener(IPAddress.Loopback, _port); // IPv4 127.0.0.1 IPv6 ::1
-
         server.Start();
 
         Console.WriteLine($"Server started on port {_port}");
@@ -104,47 +103,26 @@ public class Server
         catch { }
     }
 
-    public string BadRequest(Response response)
-    {
-        response.Status = "4 bad request";
-        return ToJson(response);
-    }
-    public string NotFound(Response response)
-    {
-        response.Status = "5 not found";
-        return ToJson(response);
-    }
-    public string MissingResource(Response response)
-    {
-        response.Status += "missing resource";
-        return ToJson(response);
-    }
-
     // CREATE 
     public string ProccessCreateRequest(Request request, Response response)
     {
         if (!HasPath(request)) return MissingResource(response);
 
-        if (!HasBody(request)) response.Status += "missing body,";
+        if (!HasBody(request)) return MissingBody(response);
 
-        if (regexItemForID.IsMatch(request.Path))
-        {
-            return BadRequest(response);
-        }
+        if (regexItemForID.IsMatch(request.Path)) return BadRequest(response);
 
         if (HasBody(request))
         {
             Category cat = FromJsonC(request.Body);
             if (category.CreateCategory(cat))
             {
-                response.Status = "1 ok";
-
                 response.Body = ToJson(cat);
-                return ToJson(response);
+                return Ok(response);
             }
             else
             {
-                response.Status = "Something whent wrong";
+                response.Status = "Could not create new category";
                 return ToJson(response);
             }
         }
@@ -155,11 +133,10 @@ public class Server
     {
         if (!HasPath(request)) return MissingResource(response);
 
-        if (request.Path == "/api/categories" || request.Path == "/api/categories/")
+        if (regexValidPathReadAll.IsMatch(request.Path))
         {
-            response.Status = "1 Ok";
             response.Body = category.GetCategories();
-            return ToJson(response);
+            return Ok(response);
         }
         if (regexDigitAtEndOfString.IsMatch(request.Path))
         {
@@ -176,16 +153,13 @@ public class Server
 
             if (category.GetCategoryCount() > value)
             {
-                response.Status = "1 Ok";
                 response.Body = category.GetCategoryByID(value);
-                return ToJson(response);
+                return Ok(response);
             }
             else
-            {
                 return NotFound(response);
-            }
         }
-        if (!request.Path.Contains("/api/category") || !regexDigitAtEndOfString.IsMatch(request.Path)) // perhpas change path to categories here as well?
+        if (!regexDigitAtEndOfString.IsMatch(request.Path)) 
         {
             return BadRequest(response);
         }
@@ -196,11 +170,7 @@ public class Server
     {
         if (!HasPath(request)) return MissingResource(response);
 
-        if (!HasBody(request))
-        {
-            response.Status += "missing body,";
-            return ToJson(response);
-        }
+        if (!HasBody(request)) return MissingBody(response);
         if (!regexOnlyDigit.IsMatch(request.Date.ToString()))
         {
             response.Status += "illegal date";
@@ -218,9 +188,8 @@ public class Server
         if (HasPath(request) && regexItemForID.IsMatch(request.Path))
         {
             Category cat = FromJsonC(request.Body);
-            int id = Int32.Parse(regexDigitAtEndOfString.Match(request.Path).Value);
 
-            if (category.UpdateCategoryById(id, cat))
+            if (category.UpdateCategoryById(PathToInt(request.Path), cat))
             {
                 response.Status = "3 updated";
                 return ToJson(response);
@@ -228,37 +197,27 @@ public class Server
             else return NotFound(response);
         }
         else
-        {
             return BadRequest(response);
-        }
     }
     // DELETE
     public string ProccessDeleteRequest(Request request, Response response)
     {
         if (!HasPath(request)) return MissingResource(response);
 
-        if (!regexItemForID.IsMatch(request.Path))
-        {
-            return BadRequest(response);
-        }
+        if (!regexItemForID.IsMatch(request.Path)) return BadRequest(response);
+
         if (HasPath(request) && regexItemForID.IsMatch(request.Path))
         {
-            int id = Int32.Parse(regexDigitAtEndOfString.Match(request.Path).Value);
-
-            if (category.DeleteCategory(id))
-            {
-                response.Status = "1 ok";
-            }
-            else return NotFound(response);
-
-            return ToJson(response);
+            if (category.DeleteCategory(PathToInt(request.Path))) return Ok(response);
+            else
+                return NotFound(response);
         }
         return ToJson(response);
     }
     // ECHO 
     public string ProccessEchoRequest(Request request, Response response)
     {
-        if (!HasBody(request)) response.Status += "missing body,";
+        if (!HasBody(request)) return MissingBody(response);
         response.Body = request.Body;
         return ToJson(response);
     }
@@ -266,13 +225,38 @@ public class Server
     public bool HasPath(Request request) { return request.Path != null; }
 
     public bool HasBody(Request request) { return request.Body != null; }
+    public string Ok(Response response)
+    {
+        response.Status = "1 Ok";
+        return ToJson(response);
+    }
+    public string BadRequest(Response response)
+    {
+        response.Status = "4 bad request";
+        return ToJson(response);
+    }
+    public string NotFound(Response response)
+    {
+        response.Status = "5 not found";
+        return ToJson(response);
+    }
+    public string MissingResource(Response response)
+    {
+        response.Status = "missing resource";
+        return ToJson(response);
+    }
+    public string MissingBody(Response response)
+    {
+        response.Status = "missing body";
+        return ToJson(response);
+    }
 
     private string ReadFromStream(NetworkStream stream)
     {
-        var buffer = new byte[1024];
-        var readCount = stream.Read(buffer);
         // Hvis der fx. er 10 bytes, så læser vi kun de 10 bytes. Vi tager altså fra pos0 til readcount. 
         // Hvis vi bare gjorde: return Encoding.UTF8.GetString(buffer);, så vil vi tage hele bufferen med og sætte den til en string
+        var buffer = new byte[1024];
+        var readCount = stream.Read(buffer);
         return Encoding.UTF8.GetString(buffer, 0, readCount);
     }
 
@@ -294,5 +278,10 @@ public class Server
     public static Category? FromJsonC(string element)
     {
         return JsonSerializer.Deserialize<Category>(element, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+    }
+
+    public int PathToInt(string path)
+    {
+        return Int32.Parse(regexDigitAtEndOfString.Match(path).Value);
     }
 }

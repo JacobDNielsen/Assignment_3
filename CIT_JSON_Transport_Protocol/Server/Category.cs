@@ -64,7 +64,7 @@ public class CategoryList
         try
         {
             CategoriesAPI[id - 1] = category;
-            Console.WriteLine("We updating the cat name: " + CategoriesAPI[id - 1].Name);
+            Console.WriteLine("We updating the category name: " + CategoriesAPI[id - 1].Name);
             return true;
         }
         catch
