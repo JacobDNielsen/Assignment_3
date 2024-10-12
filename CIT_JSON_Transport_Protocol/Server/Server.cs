@@ -6,7 +6,10 @@ using System.Text.RegularExpressions;
 
 public class Server
 {
-    Category category = new Category();
+    CategoryList category = new CategoryList();
+    Regex regexOnlyDigit = new Regex("^[0-9]*$");
+    Regex regexItemForID = new Regex(@"/(\d+)$");
+    Regex regexDigitAtEndOfString = new Regex("[0-9]*$");
 
     private readonly int _port;
 
@@ -37,145 +40,240 @@ public class Server
         try
         {
             var stream = client.GetStream();
-
             string msg = ReadFromStream(stream);
 
             Console.WriteLine("Message from client: " + msg);
 
-            var regexItem = new Regex("^[0-9]*$");
-            var regexItemForID = new Regex(@"/(\d+)$");
             var response = new Response();
+            var request = FromJson(msg);
+            string[] validMethods = ["create", "read", "update", "delete", "echo"];
 
-            if (msg == "{}")
+            if (request == null)
             {
-                response.Status = "missing method, missing date";
-
+                response.Status = "Request was in bad format";
                 var json = ToJson(response);
                 WriteToStream(stream, json);
+                return;
             }
-            else
+
+            bool failed = false;
+
+            if (request.Date == null)
             {
-                var request = FromJson(msg);
-                if (request == null)
-                {
-                    return; //Could possibly use better error handling here!
-                }
-                string[] validMethods = ["create", "read", "update", "delete", "echo"];
-                string[] validMethodsForBody = ["create", "update", "echo"];
-                string[] validMethodsRequiresJsonBody = ["create", "update"];
-                string[] validMethodsRequireID = ["read", "update", "delete"];
+                response.Status += "missing date";
+                failed = true;
+            }
+            if (request.Method == null)
+            {
+                response.Status += "missing method";
+                failed = true;
+            }
+            else if (!validMethods.Contains(request.Method))
+            {
+                response.Status += "illegal method";
+                failed = true;
+            }
 
-                if (!validMethods.Contains(request.Method))
-                {
-                    response.Status = "illegal method";
+            if (failed)
+            {
+                var json = ToJson(response);
+                WriteToStream(stream, json);
+                return;
+            }
 
-                    var json = ToJson(response);
-                    WriteToStream(stream, json);
-                }
-                else if (request.Path == null && request.Method != "echo")
-                {
-                    response.Status = "missing resource";
-
-                    var json = ToJson(response);
-                    WriteToStream(stream, json);
-                }
-                else if (!regexItem.IsMatch(request.Date.ToString()))
-                {
-                    response.Status = "illegal date";
-
-                    var json = ToJson(response);
-                    WriteToStream(stream, json);
-                }
-                else if (validMethodsForBody.Contains(request.Method) && request.Body == null)
-                {
-                    response.Status = "missing body";
-                    var json = ToJson(response);
-                    WriteToStream(stream, json);
-                }
-                else if (validMethodsRequiresJsonBody.Contains(request.Method))
-                {
-                    try
-                    {
-                        JsonDocument.Parse(request.Body); // do something if it is ok
-                    }
-                    catch
-                    {
-                        response.Status = "illegal body";
-
-                        var json = ToJson(response);
-                        WriteToStream(stream, json);
-                    }
-                }
-                else if (request.Method == "echo")
-                {
-                    response.Body = request.Body;
-                    var json = ToJson(response);
-                    WriteToStream(stream, json);
-                    Console.WriteLine("Body test: " + response.Body);
-                }
-                else if (request.Method == "read" && !regexItemForID.IsMatch(request.Path)) // should match on if there is numbers and /
-                {
-                    Console.WriteLine(  "Called read and categories, no id");
-                    response.Status = "4 Bad Request";
-
-                    var json = ToJson(response);
-                    WriteToStream(stream, json);
-                }
-                if (request.Method == "read" && regexItemForID.IsMatch(request.Path)) //If path is not xxxx/number
-                {
-                    response.Status = "1 Ok";
-                    response.Body = category.GetCategories();
-
-                    var json = ToJson(response);
-                    WriteToStream(stream, json);
-                }
-                if (request.Method == "read" && regexItemForID.IsMatch(request.Path))
-                {
-                    string[] pathArray = request.Path.Split('/');
-                    string value = pathArray[^1]; // "1"
-                    Console.WriteLine(value);
-
-
-                    response.Status = "1 Ok";
-                    response.Body = category.GetCategoryByID(Int32.Parse(value));
-
-                    var json = ToJson(response);
-                    WriteToStream(stream, json);
-                }
-                if (request.Method == "create" && (request.Path != "/api/categories" || request.Path != "/api/categories/"))
-                {
-                    response.Status = "4 Bad Request";
-
-                    var json = ToJson(response);
-                    WriteToStream(stream, json);
-                }
-
-                if (validMethodsRequireID.Contains(request.Method))
-                {
-                    int id = -1;
-                    if (!regexItemForID.IsMatch(request.Path))
-                    {
-                        response.Status = "4 Bad Request";
-
-                        var json = ToJson(response);
-                        WriteToStream(stream, json);
-                    }
-                    else
-                    {
-                        id = Int32.Parse(request.Path);
-                        // send this to the category dict
-                    }
-                }
+            // switch for each crud method + echo
+            switch (request.Method)
+            {
+                case "create":
+                    WriteToStream(stream, ProccessCreateRequest(request, response));
+                    break;
+                case "read":
+                    WriteToStream(stream, ProccessReadRequest(request, response));
+                    break;
+                case "update":
+                    WriteToStream(stream, ProccessUpdateRequest(request, response));
+                    break;
+                case "delete":
+                    WriteToStream(stream, ProccessDeleteRequest(request, response));
+                    break;
+                case "echo":
+                    WriteToStream(stream, ProccessEchoRequest(request, response));
+                    break;
             }
         }
         catch { }
     }
+
+    public string BadRequest(Response response)
+    {
+        response.Status = "4 bad request";
+        return ToJson(response);
+    }
+    public string NotFound(Response response)
+    {
+        response.Status = "5 not found";
+        return ToJson(response);
+    }
+    public string MissingResource(Response response)
+    {
+        response.Status += "missing resource";
+        return ToJson(response);
+    }
+
+    // CREATE 
+    public string ProccessCreateRequest(Request request, Response response)
+    {
+        if (!HasPath(request)) return MissingResource(response);
+
+        if (!HasBody(request)) response.Status += "missing body,";
+
+        if (regexItemForID.IsMatch(request.Path))
+        {
+            return BadRequest(response);
+        }
+
+        if (HasBody(request))
+        {
+            Category cat = FromJsonC(request.Body);
+            if (category.CreateCategory(cat))
+            {
+                response.Status = "1 ok";
+
+                response.Body = ToJson(cat);
+                return ToJson(response);
+            }
+            else
+            {
+                response.Status = "Something whent wrong";
+                return ToJson(response);
+            }
+        }
+        return ToJson(response);
+    }
+    // READ
+    public string ProccessReadRequest(Request request, Response response)
+    {
+        if (!HasPath(request)) return MissingResource(response);
+
+        if (request.Path == "/api/categories" || request.Path == "/api/categories/")
+        {
+            response.Status = "1 Ok";
+            response.Body = category.GetCategories();
+            return ToJson(response);
+        }
+        if (regexDigitAtEndOfString.IsMatch(request.Path))
+        {
+            string[] pathArray = request.Path.Split('/');
+            int value = 0;
+            try
+            {
+                value = Int32.Parse(pathArray[^1]);
+            }
+            catch
+            {
+                return BadRequest(response);
+            }
+
+            if (category.GetCategoryCount() > value)
+            {
+                response.Status = "1 Ok";
+                response.Body = category.GetCategoryByID(value);
+                return ToJson(response);
+            }
+            else
+            {
+                return NotFound(response);
+            }
+        }
+        if (!request.Path.Contains("/api/category") || !regexDigitAtEndOfString.IsMatch(request.Path)) // perhpas change path to categories here as well?
+        {
+            return BadRequest(response);
+        }
+        return ToJson(response);
+    }
+    // UPDATE
+    public string ProccessUpdateRequest(Request request, Response response)
+    {
+        if (!HasPath(request)) return MissingResource(response);
+
+        if (!HasBody(request))
+        {
+            response.Status += "missing body,";
+            return ToJson(response);
+        }
+        if (!regexOnlyDigit.IsMatch(request.Date.ToString()))
+        {
+            response.Status += "illegal date";
+            return ToJson(response);
+        }
+        try
+        {
+            JsonDocument.Parse(request.Body);
+        }
+        catch
+        {
+            response.Status += "illegal body,";
+            return ToJson(response);
+        }
+        if (HasPath(request) && regexItemForID.IsMatch(request.Path))
+        {
+            Category cat = FromJsonC(request.Body);
+            int id = Int32.Parse(regexDigitAtEndOfString.Match(request.Path).Value);
+
+            if (category.UpdateCategoryById(id, cat))
+            {
+                response.Status = "3 updated";
+                return ToJson(response);
+            }
+            else return NotFound(response);
+        }
+        else
+        {
+            return BadRequest(response);
+        }
+    }
+    // DELETE
+    public string ProccessDeleteRequest(Request request, Response response)
+    {
+        if (!HasPath(request)) return MissingResource(response);
+
+        if (!regexItemForID.IsMatch(request.Path))
+        {
+            return BadRequest(response);
+        }
+        if (HasPath(request) && regexItemForID.IsMatch(request.Path))
+        {
+            int id = Int32.Parse(regexDigitAtEndOfString.Match(request.Path).Value);
+
+            if (category.DeleteCategory(id))
+            {
+                response.Status = "1 ok";
+            }
+            else return NotFound(response);
+
+            return ToJson(response);
+        }
+        return ToJson(response);
+    }
+    // ECHO 
+    public string ProccessEchoRequest(Request request, Response response)
+    {
+        if (!HasBody(request)) response.Status += "missing body,";
+        response.Body = request.Body;
+        return ToJson(response);
+    }
+
+    public bool HasPath(Request request) { return request.Path != null; }
+
+    public bool HasBody(Request request) { return request.Body != null; }
+
     private string ReadFromStream(NetworkStream stream)
     {
         var buffer = new byte[1024];
         var readCount = stream.Read(buffer);
-        return Encoding.UTF8.GetString(buffer, 0, readCount); //Hvis der fx. er 10 bytes, så læser vi kun de 10 bytes. Vi tager altså fra pos0 til readcount. 
-                                                              // Hvis vi bare gjorde: return Encoding.UTF8.GetString(buffer);, så vil vi tage hele bufferen med og sætte den til en string
+        // Hvis der fx. er 10 bytes, så læser vi kun de 10 bytes. Vi tager altså fra pos0 til readcount. 
+        // Hvis vi bare gjorde: return Encoding.UTF8.GetString(buffer);, så vil vi tage hele bufferen med og sætte den til en string
+        return Encoding.UTF8.GetString(buffer, 0, readCount);
     }
 
     private void WriteToStream(NetworkStream stream, string msg)
@@ -184,7 +282,7 @@ public class Server
         stream.Write(buffer);
     }
 
-    public static string ToJson(Response response)
+    public static string ToJson(object response)
     {
         return JsonSerializer.Serialize(response, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
@@ -193,5 +291,8 @@ public class Server
     {
         return JsonSerializer.Deserialize<Request>(element, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
+    public static Category? FromJsonC(string element)
+    {
+        return JsonSerializer.Deserialize<Category>(element, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+    }
 }
-

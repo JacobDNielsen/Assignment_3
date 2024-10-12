@@ -10,7 +10,6 @@ using System.Text.Json.Serialization;
 
 namespace Assignment3TestSuite
 {
-
     public class Response
     {
         public string Status { get; set; }
@@ -171,9 +170,7 @@ namespace Assignment3TestSuite
             client.SendRequest(request.ToJson());
             var response = client.ReadResponse();
 
-
             Assert.Contains("illegal body", response.Status.ToLower());
-
         }
 
         /* Echo Test */
@@ -193,7 +190,6 @@ namespace Assignment3TestSuite
             var response = client.ReadResponse();
 
             Assert.Equal("Hello World", response.Body);
-
         }
 
         //////////////////////////////////////////////////////////
@@ -224,9 +220,8 @@ namespace Assignment3TestSuite
             Assert.Equal(expectedResponse.ToJson().ToLower(), response.ToJson().ToLower());
         }
 
-
         [Fact]
-        public void Constraint_RequestWithInvalidPathId_StatusBadRequest()
+        public void Constraint_RequestWithInvalidPathId_StatusBadRequest()  
         {
             var client = Connect();
 
@@ -244,7 +239,6 @@ namespace Assignment3TestSuite
 
             Assert.Equal(expectedResponse.ToJson().ToLower(), response.ToJson().ToLower());
         }
-
 
         [Fact]
         public void Constraint_CreateWithPathId_StatusBadRequest()
@@ -364,7 +358,6 @@ namespace Assignment3TestSuite
 
             Assert.Equal(expectedResponse.ToJson(), response.ToJson());
         }
-#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
 
         [Fact]
         public void Request_ReadCategoryWithInvalidId_StatusNotFound()
@@ -423,7 +416,7 @@ namespace Assignment3TestSuite
         }
 
         [Fact]
-        public void Request_UpdateCategotyValidIdAndBody_ChangedCategoryName()
+        public void Request_UpdateCategoryValidIdAndBody_ChangedCategoryName()
         {
             var client = Connect();
 
@@ -574,6 +567,7 @@ namespace Assignment3TestSuite
             Assert.Contains("5 not found", response.Status.ToLower());
         }
 
+#if RUN_ALL_TESTS //Hvis denne er defineret, saa koerer vi alle tests.
 #endif
 
         /**********************************************************
