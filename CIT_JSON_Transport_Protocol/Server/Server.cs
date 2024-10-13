@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class Server
 {
@@ -80,6 +81,22 @@ public class Server
                 return;
             }
 
+            // can collect similar ones and easily see which ones trigger what response
+            switch (request)
+            {
+                case { Method: "read", Date: string, Path: null }:
+                case { Method: "update", Date: string, Path: null }:
+                case { Method: "create", Date: string, Path: null }:
+                case { Method: "delete", Date: string, Path: null }:
+                    WriteToStream(stream, MissingResource(response));
+                    break;
+                case { Method: "echo", Date: string, Path: string, Body: null }:
+                case { Method: "create", Date: string, Path: string, Body: null }:
+                case { Method: "update", Date: string, Path: string, Body: null }:
+                    WriteToStream(stream, MissingBody(response));
+                    break;
+            }
+
             // switch for each crud method + echo
             switch (request.Method)
             {
@@ -106,9 +123,8 @@ public class Server
     // CREATE 
     public string ProccessCreateRequest(Request request, Response response)
     {
-        if (!HasPath(request)) return MissingResource(response);
-
-        if (!HasBody(request)) return MissingBody(response);
+        //if (!HasPath(request)) return MissingResource(response);
+        //if (!HasBody(request)) return MissingBody(response);
 
         if (regexItemForID.IsMatch(request.Path)) return BadRequest(response);
 
@@ -131,7 +147,7 @@ public class Server
     // READ
     public string ProccessReadRequest(Request request, Response response)
     {
-        if (!HasPath(request)) return MissingResource(response);
+        //if (!HasPath(request)) return MissingResource(response);
 
         if (regexValidPathReadAll.IsMatch(request.Path))
         {
@@ -159,7 +175,7 @@ public class Server
             else
                 return NotFound(response);
         }
-        if (!regexDigitAtEndOfString.IsMatch(request.Path)) 
+        if (!regexDigitAtEndOfString.IsMatch(request.Path))
         {
             return BadRequest(response);
         }
@@ -168,9 +184,9 @@ public class Server
     // UPDATE
     public string ProccessUpdateRequest(Request request, Response response)
     {
-        if (!HasPath(request)) return MissingResource(response);
+        //if (!HasPath(request)) return MissingResource(response);
+        //if (!HasBody(request)) return MissingBody(response);
 
-        if (!HasBody(request)) return MissingBody(response);
         if (!regexOnlyDigit.IsMatch(request.Date.ToString()))
         {
             response.Status += "illegal date";
@@ -202,7 +218,7 @@ public class Server
     // DELETE
     public string ProccessDeleteRequest(Request request, Response response)
     {
-        if (!HasPath(request)) return MissingResource(response);
+        //if (!HasPath(request)) return MissingResource(response);
 
         if (!regexItemForID.IsMatch(request.Path)) return BadRequest(response);
 
@@ -217,7 +233,7 @@ public class Server
     // ECHO 
     public string ProccessEchoRequest(Request request, Response response)
     {
-        if (!HasBody(request)) return MissingBody(response);
+        //if (!HasBody(request)) return MissingBody(response);
         response.Body = request.Body;
         return ToJson(response);
     }
