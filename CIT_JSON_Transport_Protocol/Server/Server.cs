@@ -3,7 +3,6 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class Server
 {
@@ -32,7 +31,6 @@ public class Server
             Console.WriteLine("Client connected!!!");
 
             Task.Run(() => HandleClient(client)); // Vi laver en ny thread for hver client, så vi kan håndtere flere clients på samme tid. Nødvendigt, da vi i test environment kører tests på flere threads, og denne tillader altså server at kører med flere threads. 
-
         }
     }
     private void HandleClient(TcpClient client)
@@ -46,35 +44,8 @@ public class Server
 
             var response = new Response();
             var request = FromJson(msg);
-            string[] validMethods = ["create", "read", "update", "delete", "echo"];
 
-            if (request == null)
-            {
-                response.Status = "Request was in bad format";
-                var json = ToJson(response);
-                WriteToStream(stream, json);
-                return;
-            }
-
-            bool failed = false;
-
-            if (request.Date == null)
-            {
-                response.Status += "missing date";
-                failed = true;
-            }
-            if (request.Method == null)
-            {
-                response.Status += "missing method";
-                failed = true;
-            }
-            else if (!validMethods.Contains(request.Method))
-            {
-                response.Status += "illegal method";
-                failed = true;
-            }
-
-            if (failed)
+            if (IsValidRequest(request, response))
             {
                 var json = ToJson(response);
                 WriteToStream(stream, json);
@@ -89,12 +60,12 @@ public class Server
                 case { Method: "create", Date: string, Path: null }:
                 case { Method: "delete", Date: string, Path: null }:
                     WriteToStream(stream, MissingResource(response));
-                    break;
+                    return;
                 case { Method: "echo", Date: string, Path: string, Body: null }:
                 case { Method: "create", Date: string, Path: string, Body: null }:
                 case { Method: "update", Date: string, Path: string, Body: null }:
                     WriteToStream(stream, MissingBody(response));
-                    break;
+                    return; // return instead of break, don't need to run the other parts of the code once we write to stream
             }
 
             // switch for each crud method + echo
@@ -118,6 +89,35 @@ public class Server
             }
         }
         catch { }
+    }
+
+    public bool IsValidRequest(Request request, Response response)
+    {
+        bool validRequest = false;
+        string[] validMethods = ["create", "read", "update", "delete", "echo"];
+
+        if (request == null)
+        {
+            response.Status = "Request was in bad format";
+            return true;
+        }
+
+        if (request.Date == null)
+        {
+            response.Status += "missing date";
+            validRequest = true;
+        }
+        if (request.Method == null)
+        {
+            response.Status += "missing method";
+            validRequest = true;
+        }
+        else if (!validMethods.Contains(request.Method))
+        {
+            response.Status += "illegal method";
+            validRequest = true;
+        }
+        return validRequest;
     }
 
     // CREATE 
@@ -156,11 +156,10 @@ public class Server
         }
         if (regexDigitAtEndOfString.IsMatch(request.Path))
         {
-            string[] pathArray = request.Path.Split('/');
             int value = 0;
             try
             {
-                value = Int32.Parse(pathArray[^1]);
+                value = PathToInt(request.Path);
             }
             catch
             {
@@ -189,7 +188,7 @@ public class Server
 
         if (!regexOnlyDigit.IsMatch(request.Date.ToString()))
         {
-            response.Status += "illegal date";
+            response.Status = "illegal date";
             return ToJson(response);
         }
         try
@@ -198,7 +197,7 @@ public class Server
         }
         catch
         {
-            response.Status += "illegal body,";
+            response.Status = "illegal body,";
             return ToJson(response);
         }
         if (HasPath(request) && regexItemForID.IsMatch(request.Path))
@@ -296,8 +295,15 @@ public class Server
         return JsonSerializer.Deserialize<Category>(element, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
 
-    public int PathToInt(string path)
+    public int PathToInt(string path) // every one who use this method should check for exception, though only at one point in the test does it care
     {
-        return Int32.Parse(regexDigitAtEndOfString.Match(path).Value);
+        try
+        {
+            return Int32.Parse(regexDigitAtEndOfString.Match(path).Value);
+        }
+        catch (InvalidCastException)
+        {
+            throw new Exception();
+        }
     }
 }
