@@ -20,38 +20,37 @@ public class CategoryList
 
     public bool CreateCategory(Category category)
     {
-        try
-        {
-            category.Id = Random.Shared.Next(100, int.MaxValue);
-            CategoriesAPI.Add(category);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
+
+
+        category.Id = Random.Shared.Next(100, int.MaxValue); // Creates random ID, Random is generated with same seed throughout threads
+        CategoriesAPI.Add(category);
+        return true;
+
     }
     public bool DeleteCategory(int id)
     {
         try
         {
-            CategoriesAPI.RemoveAt(CategoriesAPI.FindIndex(x => x.Id == id));
+            CategoriesAPI.RemoveAt(GetCategoryIndex(id));
             return true;
         }
-        catch
+        catch //No current tests where catch happens, but still nice to have!
         {
             return false;
+
         }
     }
 
+    //Returns all categories as JSON string
     public string GetCategories()
     {
         return JsonSerializer.Serialize(CategoriesAPI, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
 
+    //Returns specific category by ID as JSON string.
     public string GetCategoryByID(int id)
     {
-        return JsonSerializer.Serialize(CategoriesAPI[id - 1], new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        return JsonSerializer.Serialize(CategoriesAPI[GetCategoryIndex(id)], new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
 
     public int GetCategoryCount()
@@ -59,12 +58,12 @@ public class CategoryList
         return CategoriesAPI.Count;
     }
 
+    //Updating category by replacing existing category object with new category object from parameter.
     public bool UpdateCategoryById(int id, Category category)
     {
         try
         {
-            CategoriesAPI[id - 1] = category;
-            Console.WriteLine("We updating the category name: " + CategoriesAPI[id - 1].Name);
+            CategoriesAPI[GetCategoryIndex(id)] = category;
             return true;
         }
         catch
@@ -72,4 +71,10 @@ public class CategoryList
             return false;
         }
     }
+
+    int GetCategoryIndex(int id)
+    {
+        return CategoriesAPI.FindIndex(x => x.Id == id); //FindIndex returns the index of element in CategoriesAPI that has the Id equal to the provided id
+    }
+
 }

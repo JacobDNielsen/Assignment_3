@@ -221,7 +221,7 @@ namespace Assignment3TestSuite
         }
 
         [Fact]
-        public void Constraint_RequestWithInvalidPathId_StatusBadRequest()  
+        public void Constraint_RequestWithInvalidPathId_StatusBadRequest()
         {
             var client = Connect();
 

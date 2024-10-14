@@ -7,9 +7,10 @@ using System.Text.RegularExpressions;
 public class Server
 {
     CategoryList category = new CategoryList();
-    Regex regexValidDate = new Regex("^[0-9]*$");
-    Regex regexDigitAtEndOfString = new Regex(@"(?<=/)(\d+)$");
-    Regex regexValidPathReadAll = new Regex(@"^/api/categories/?$");
+
+    Regex regexValidDate = new Regex("^[0-9]*$"); //Checks that string is only numbers. String can contain 0 to many numbers.
+    Regex regexDigitAtEndOfString = new Regex(@"(?<=/)(\d+)$"); //Finds all digits after the last / in a string. 
+    Regex regexValidPathReadAll = new Regex(@"^/api/categories/?$"); //Checks that string is exactly /api/categories or /api/categories/
 
     private readonly int _port;
 
@@ -29,12 +30,12 @@ public class Server
             var client = server.AcceptTcpClient();
             Console.WriteLine("Client connected!!!");
 
-            Task.Run(() => HandleClient(client)); // Vi laver en ny thread for hver client, så vi kan håndtere flere clients på samme tid. Nødvendigt, da vi i test environment kører tests på flere threads, og denne tillader altså server at kører med flere threads. 
+            Task.Run(() => HandleClient(client)); // Queues up each client and run HandleClient on each client
         }
     }
     private void HandleClient(TcpClient client)
     {
-        try
+        try //Try-Catch to catch any exceptions that might occur during the handling of the client
         {
             var stream = client.GetStream();
             string msg = ReadFromStream(stream);
@@ -46,8 +47,8 @@ public class Server
 
             if (IsValidRequest(request, response))
             {
-                var json = ToJson(response);
-                WriteToStream(stream, json);
+                var jsonResponse = ToJson(response);
+                WriteToStream(stream, jsonResponse);
                 return;
             }
 
@@ -72,24 +73,25 @@ public class Server
             {
                 case "create":
                     WriteToStream(stream, ProccessCreateRequest(request, response));
-                    break;
+                    return;
                 case "read":
                     WriteToStream(stream, ProccessReadRequest(request, response));
-                    break;
+                    return;
                 case "update":
                     WriteToStream(stream, ProccessUpdateRequest(request, response));
-                    break;
+                    return;
                 case "delete":
                     WriteToStream(stream, ProccessDeleteRequest(request, response));
-                    break;
+                    return;
                 case "echo":
                     WriteToStream(stream, ProccessEchoRequest(request, response));
-                    break;
+                    return;
             }
         }
         catch { }
     }
 
+    // Method to check if request is valid. Sets response status and marks bool value accordingly.
     public bool IsValidRequest(Request request, Response response)
     {
         bool validRequest = false;
@@ -122,8 +124,6 @@ public class Server
     // CREATE 
     public string ProccessCreateRequest(Request request, Response response)
     {
-        //if (!HasPath(request)) return MissingResource(response);
-        //if (!HasBody(request)) return MissingBody(response);
 
         if (regexDigitAtEndOfString.IsMatch(request.Path)) return BadRequest(response);
 
@@ -146,7 +146,6 @@ public class Server
     // READ
     public string ProccessReadRequest(Request request, Response response)
     {
-        //if (!HasPath(request)) return MissingResource(response);
 
         if (regexValidPathReadAll.IsMatch(request.Path))
         {
@@ -182,8 +181,6 @@ public class Server
     // UPDATE
     public string ProccessUpdateRequest(Request request, Response response)
     {
-        //if (!HasPath(request)) return MissingResource(response);
-        //if (!HasBody(request)) return MissingBody(response);
 
         if (!regexValidDate.IsMatch(request.Date.ToString()))
         {
@@ -196,14 +193,14 @@ public class Server
         }
         catch
         {
-            response.Status = "illegal body,";
+            response.Status = "illegal body";
             return ToJson(response);
         }
         if (HasPath(request) && regexDigitAtEndOfString.IsMatch(request.Path))
         {
-            Category cat = FromJson<Category>(request.Body);
+            Category category = FromJson<Category>(request.Body);
 
-            if (category.UpdateCategoryById(PathToInt(request.Path), cat))
+            if (this.category.UpdateCategoryById(PathToInt(request.Path), category))
             {
                 response.Status = "3 updated";
                 return ToJson(response);
@@ -216,7 +213,6 @@ public class Server
     // DELETE
     public string ProccessDeleteRequest(Request request, Response response)
     {
-        //if (!HasPath(request)) return MissingResource(response);
 
         if (!regexDigitAtEndOfString.IsMatch(request.Path)) return BadRequest(response);
 
@@ -231,14 +227,15 @@ public class Server
     // ECHO 
     public string ProccessEchoRequest(Request request, Response response)
     {
-        //if (!HasBody(request)) return MissingBody(response);
         response.Body = request.Body;
         return ToJson(response);
     }
 
-    public bool HasPath(Request request) { return request.Path != null; }
+    public bool HasPath(Request request) { return request.Path != null; } //Returns true if request has a path
 
-    public bool HasBody(Request request) { return request.Body != null; }
+    public bool HasBody(Request request) { return request.Body != null; } //Same as above, but for body
+
+    //Below methods sets Response.Status to a specific status and returns the response as a JSON string.
     public string Ok(Response response)
     {
         response.Status = "1 Ok";
@@ -265,12 +262,24 @@ public class Server
         return ToJson(response);
     }
 
+
+    //Takes a string (which is the path) and returns the last digit in the string as an integer.
+    public int PathToInt(string path)
+    {
+        try
+        {
+            return Int32.Parse(regexDigitAtEndOfString.Match(path).Value);
+        }
+        catch (InvalidCastException)
+        {
+            throw new Exception();
+        }
+    }
+
     private string ReadFromStream(NetworkStream stream)
     {
-        // Hvis der fx. er 10 bytes, så læser vi kun de 10 bytes. Vi tager altså fra pos0 til readcount. 
-        // Hvis vi bare gjorde: return Encoding.UTF8.GetString(buffer);, så vil vi tage hele bufferen med og sætte den til en string
         var buffer = new byte[1024];
-        var readCount = stream.Read(buffer);
+        var readCount = stream.Read(buffer); //readCount is the amount of bytes read from the stream
         return Encoding.UTF8.GetString(buffer, 0, readCount);
     }
 
@@ -285,20 +294,10 @@ public class Server
         return JsonSerializer.Serialize(response, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
 
-    public static T? FromJson<T>(string element)
+    public static T FromJson<T>(string element)
     {
         return JsonSerializer.Deserialize<T>(element, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
 
-    public int PathToInt(string path) // every one who use this method should check for exception, though only at one point in the test does it care
-    {
-        try
-        {
-            return Int32.Parse(regexDigitAtEndOfString.Match(path).Value);
-        }
-        catch (InvalidCastException)
-        {
-            throw new Exception();
-        }
-    }
+
 }
