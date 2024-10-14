@@ -7,10 +7,9 @@ using System.Text.RegularExpressions;
 public class Server
 {
     CategoryList category = new CategoryList();
-    Regex regexOnlyDigit = new Regex("^[0-9]*$");
-    Regex regexItemForID = new Regex(@"/(\d+)$");
+    Regex regexValidDate = new Regex("^[0-9]*$");
+    Regex regexDigitAtEndOfString = new Regex(@"(?<=/)(\d+)$");
     Regex regexValidPathReadAll = new Regex(@"^/api/categories/?$");
-    Regex regexDigitAtEndOfString = new Regex("[0-9]*$");
 
     private readonly int _port;
 
@@ -43,7 +42,7 @@ public class Server
             Console.WriteLine("Message from client: " + msg);
 
             var response = new Response();
-            var request = FromJson(msg);
+            var request = FromJson<Request>(msg);
 
             if (IsValidRequest(request, response))
             {
@@ -126,11 +125,11 @@ public class Server
         //if (!HasPath(request)) return MissingResource(response);
         //if (!HasBody(request)) return MissingBody(response);
 
-        if (regexItemForID.IsMatch(request.Path)) return BadRequest(response);
+        if (regexDigitAtEndOfString.IsMatch(request.Path)) return BadRequest(response);
 
         if (HasBody(request))
         {
-            Category cat = FromJsonC(request.Body);
+            Category cat = FromJson<Category>(request.Body);
             if (category.CreateCategory(cat))
             {
                 response.Body = ToJson(cat);
@@ -186,7 +185,7 @@ public class Server
         //if (!HasPath(request)) return MissingResource(response);
         //if (!HasBody(request)) return MissingBody(response);
 
-        if (!regexOnlyDigit.IsMatch(request.Date.ToString()))
+        if (!regexValidDate.IsMatch(request.Date.ToString()))
         {
             response.Status = "illegal date";
             return ToJson(response);
@@ -200,9 +199,9 @@ public class Server
             response.Status = "illegal body,";
             return ToJson(response);
         }
-        if (HasPath(request) && regexItemForID.IsMatch(request.Path))
+        if (HasPath(request) && regexDigitAtEndOfString.IsMatch(request.Path))
         {
-            Category cat = FromJsonC(request.Body);
+            Category cat = FromJson<Category>(request.Body);
 
             if (category.UpdateCategoryById(PathToInt(request.Path), cat))
             {
@@ -219,9 +218,9 @@ public class Server
     {
         //if (!HasPath(request)) return MissingResource(response);
 
-        if (!regexItemForID.IsMatch(request.Path)) return BadRequest(response);
+        if (!regexDigitAtEndOfString.IsMatch(request.Path)) return BadRequest(response);
 
-        if (HasPath(request) && regexItemForID.IsMatch(request.Path))
+        if (HasPath(request) && regexDigitAtEndOfString.IsMatch(request.Path))
         {
             if (category.DeleteCategory(PathToInt(request.Path))) return Ok(response);
             else
@@ -286,13 +285,9 @@ public class Server
         return JsonSerializer.Serialize(response, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
 
-    public static Request? FromJson(string element)
+    public static T? FromJson<T>(string element)
     {
-        return JsonSerializer.Deserialize<Request>(element, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-    }
-    public static Category? FromJsonC(string element)
-    {
-        return JsonSerializer.Deserialize<Category>(element, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        return JsonSerializer.Deserialize<T>(element, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
 
     public int PathToInt(string path) // every one who use this method should check for exception, though only at one point in the test does it care

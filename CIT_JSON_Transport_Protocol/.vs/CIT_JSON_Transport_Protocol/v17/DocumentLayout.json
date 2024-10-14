@@ -50,8 +50,7 @@
               "RelativeToolTip": "Server\\Category.cs",
               "ViewState": "AQIAAA0AAAAAAAAAAAAAACUAAAAeAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-10T11:38:27.549Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-10T11:38:27.549Z"
             },
             {
               "$type": "Document",
@@ -61,7 +60,7 @@
               "RelativeDocumentMoniker": "Server\\Server.cs",
               "ToolTip": "C:\\Users\\Bruger\\source\\repos\\MS_CS\\Assignment_3\\CIT_JSON_Transport_Protocol\\Server\\Server.cs",
               "RelativeToolTip": "Server\\Server.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAALgAAAAFAAAA",
+              "ViewState": "AQIAAAwBAAAAAAAAAAAiwB8BAAAwAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-09T19:20:11.657Z",
               "EditorCaption": ""
@@ -112,8 +111,7 @@
               "RelativeToolTip": "Assignment3TestSuite\\Assignment3TestSuite.cs",
               "ViewState": "AQIAAIUAAAAAAAAAAAAewIsAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T11:26:03.695Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-09T11:26:03.695Z"
             }
           ]
         }
